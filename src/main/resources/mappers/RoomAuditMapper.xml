@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.manage.tavern.mapper.RoomAuditMapper" >
+
+    <update id="updateDingFormResult">
+        update tavern_ding_form_approval set result = #{result} where pro_id = #{busId}
+    </update>
+
+
+    <select id="getList" resultType="com.manage.tavern.model.vo.RoomAuditInfo">
+        select t1.pro_name,t1.city_name,t1.county_name,t1.area,t1.tgfd,t1.type_level,
+               t1.room_name,t1.room_type,t2.room_Count_Sold rzDays,t2.price_Clean priceClean,t1.actual_zj
+        from tavern_room_base_info t1
+        left join
+        (select * from tavern_bydata_room where
+            month = #{query.month} and op_time = (select max(op_time ) from tavern_bydata_room where month = #{query.month})
+        ) t2
+        on t1.room_name = t2.title
+        where 1=1
+        <if test="query.roomName != null and query.roomName != ''">
+            and room_name like CONCAT(CONCAT('%', #{query.roomName}), '%')
+        </if>
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and tgfd = #{query.tgfd}
+        </if>
+    </select>
+
+    <select id="getDailyExpend" resultType="java.lang.String">
+        select FORMAT(sum(amount),2) from tavern_ding_sk_table_data
+        where
+        approval_id in
+        (select id from tavern_ding_form_approval where approval_Type = '2' and status = 'COMPLETED'
+            and month = #{query.month} and data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+        )
+        and  bx_Type in ('房屋损耗','日常流水','物业费','水电气宽带','运营推广费')
+        and item_room = #{roomName}
+    </select>
+
+    <select id="getOtherDailyExpend" resultType="java.lang.String">
+        select FORMAT(sum(commission),2) from tavern_ding_sk_table_data
+        where
+        approval_id in
+        (select id from tavern_ding_form_approval where approval_Type = '2' and status = 'COMPLETED'
+            and month = #{query.month} and data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+        )
+        and  bx_Type in ('拉新','退单退款')
+        and item_room = #{roomName}
+    </select>
+
+    <select id="getKhFee" resultType="java.lang.String">
+        select FORMAT(sum(amount),2) khFee
+        from tavern_ding_sk_table_data where kh_Name <![CDATA[ <> ]]> ''  and item_room = #{roomName}
+        and approval_id in (select id from tavern_ding_form_approval where approval_Type = '2' and status = 'COMPLETED'
+        and month = #{query.month} and data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+        )
+    </select>
+
+    <select id="getBjFee" resultType="java.lang.String">
+        select format(sum(price),2) from Tavern_By_Bj_Data where  room_name = #{roomName} and month = #{query.month}
+    </select>
+
+    <select id="getSelectData" resultType="com.manage.tavern.model.base.SelectData">
+        select * from (
+            select tgfd name from tavern_room_base_info where  tgfd <![CDATA[ <> ]]> '' group by tgfd
+        ) t where 1=1
+        <if test="name != null and name != ''">
+            and name like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+    </select>
+
+    <select id="getFwsjFee" resultType="java.lang.String">
+        select FORMAT(sum(amount),2) from tavern_ding_sk_table_data
+        where
+        approval_id in
+        (select id from tavern_ding_form_approval where approval_Type = '2' and status = 'COMPLETED'
+            and month = #{query.month} and data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+        )
+        and  bx_Type in ('房屋升级')
+        and item_room = #{roomName}
+    </select>
+    <select id="getOpTime" resultType="java.lang.String">
+        select max(op_time) from tavern_audit_result where month = #{query.month}
+    </select>
+</mapper>

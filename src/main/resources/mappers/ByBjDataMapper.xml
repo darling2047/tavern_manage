@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.manage.tavern.mapper.ByBjDataMapper" >
+
+    <select id="getBjDetails" resultType="com.manage.tavern.model.vo.TavernByBjDataVo">
+         select t1.id,t1.data_date as task_date,t1.room_name as room_no,t1.bj_Name as workerName,t1.`type` as clean_level_name,t1.price ,
+            t1.worker_Mobile ,t1.plan_Time ,t1.state_Name ,t1.empl_Id ,t1.empl_Name ,t1.tag ,t1.month,t2.tgfd, t2.pro_name ,t2.city_name ,t2.county_name ,
+            t2.area ,t2.address
+        from Tavern_By_Bj_Data t1 left join tavern_room_base_info t2 on t1.room_name = t2.room_name
+         where 1=1
+        <if test="query.roomName != null and query.roomName != ''">
+            and t1.room_name like CONCAT(CONCAT('%', #{query.roomName}), '%')
+        </if>
+        <if test="query.month != null and query.month != ''">
+            and month = #{query.month}
+        </if>
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and tgfd = #{query.tgfd}
+        </if>
+        <if test="query.area != null and query.area != ''">
+            and area = #{query.area}
+        </if>
+        order by data_date desc
+    </select>
+
+    <select id="getDingBxDetails" resultType="com.manage.tavern.model.vo.TavernDingBxDataVo">
+        select t3.tgfd,t1.`month` ,date_format(t2.create_time,'%Y-%m-%d %H:%i:%S') create_time,date_format(t2.finish_time,'%Y-%m-%d %H:%i:%S') finish_time
+        ,t2.title,t1.item_area ,t1.bx_Type,t1.item_room,t1.amount,t1.remark,t1.jexj,t1.commission
+        from
+        tavern_ding_sk_table_data t1  left join
+        (
+            select * from tavern_ding_form_approval where 1 = 1
+            <if test="query.month != null and query.month != ''">
+                and `month` = #{query.month}
+                and data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+            </if>
+            and approval_Type = '2' and status = 'COMPLETED'
+        ) t2 on t1.pro_id = t2.pro_id
+        left join tavern_room_base_info t3 on t1.item_room = t3.room_name
+        where 1=1 and t2.title is not null
+        <if test="query.roomName != null and query.roomName != ''">
+            and t1.item_room like CONCAT(CONCAT('%', #{query.roomName}), '%')
+        </if>
+        <if test="query.month != null and query.month != ''">
+            and t1.`month` = #{query.month}
+            and t1.data_time = (select max(data_time ) from tavern_ding_form_approval where month = #{query.month})
+        </if>
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and t3.tgfd = #{query.tgfd}
+        </if>
+        <if test="query.area != null and query.area != ''">
+            and t1.item_area = #{query.area}
+        </if>
+    </select>
+    <select id="getBjCounts" resultType="java.lang.Integer">
+        select count(1)
+        from Tavern_By_Bj_Data t1
+        where t1.room_name = #{auditInfo.roomName}
+            and month = #{month}
+    </select>
+</mapper>
