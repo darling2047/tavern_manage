@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,8 +64,59 @@ public class RoomBkftServiceImpl extends ServiceImpl<RoomBkftMapper, TavernRoomB
     public void saveBkftFee(RoomBkftExcelModel item) {
         UserInfoModel user = TokenUtil.getUser();
         TavernRoomBkft bkft = BeanCopierUtils.convert(item,TavernRoomBkft.class);
-        bkft.setCreator(user.getLoginName());
-        roomBkftMapper.insert(bkft);
+        boolean existFlag = isExist(bkft);
+        if (existFlag) {
+            // 修改
+            bkft.setUpdateTime(new Date());
+            bkft.setUpdator(user.getLoginName());
+//            roomBkftMapper.updateById(bkft);
+        }else {
+            // 新增
+            bkft.setCreator(user.getLoginName());
+            roomBkftMapper.insert(bkft);
+        }
+    }
+
+    /**
+     * 判断导入数据是否存在
+     * @param bkft
+     * @return
+     */
+    private boolean isExist(TavernRoomBkft bkft) {
+        QueryWrapper<TavernRoomBkft> qw = new QueryWrapper<>();
+        qw.lambda().eq(TavernRoomBkft::getMonth, bkft.getMonth());
+        if (StringUtils.isBlank(bkft.getRoomName())) {
+            qw.lambda().isNull(TavernRoomBkft::getRoomName);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getRoomName, bkft.getRoomName());
+        }
+        if (StringUtils.isBlank(bkft.getArea())) {
+            qw.lambda().isNull(TavernRoomBkft::getArea);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getArea, bkft.getArea());
+        }
+        if (StringUtils.isBlank(bkft.getPromoter())) {
+            qw.lambda().isNull(TavernRoomBkft::getPromoter);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getPromoter, bkft.getPromoter());
+        }
+        if (StringUtils.isBlank(bkft.getFinishTime())) {
+            qw.lambda().isNull(TavernRoomBkft::getFinishTime);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getFinishTime, bkft.getFinishTime());
+        }
+        if (StringUtils.isBlank(bkft.getTgfd())) {
+            qw.lambda().isNull(TavernRoomBkft::getTgfd);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getTgfd, bkft.getTgfd());
+        }
+        if (StringUtils.isBlank(bkft.getRemark())) {
+            qw.lambda().isNull(TavernRoomBkft::getRemark);
+        }else {
+            qw.lambda().eq(TavernRoomBkft::getRemark, bkft.getRemark());
+        }
+        Integer count = roomBkftMapper.selectCount(qw);
+        return count > 0;
     }
 
     @Override

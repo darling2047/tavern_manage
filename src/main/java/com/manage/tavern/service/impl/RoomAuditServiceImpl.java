@@ -273,7 +273,9 @@ public class RoomAuditServiceImpl implements RoomAuditService {
         // 获取当月保洁次数
         Integer bjCounts = byBjDataMapper.getBjCounts(auditInfo, month);
         BigDecimal bcSum = CommonConstant.BC_PRICE_SUM.getBcSum(Integer.parseInt(roomType));
-
+        if (Objects.isNull(bjCounts) || Objects.isNull(bcSum)) {
+            return "";
+        }
         return new BigDecimal(bjCounts).multiply(bcSum).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
     }
 
