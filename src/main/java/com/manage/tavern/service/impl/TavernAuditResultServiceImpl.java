@@ -15,6 +15,7 @@ import com.manage.tavern.model.form.TavernExportLogForm;
 import com.manage.tavern.model.query.RoomAuditQuery;
 import com.manage.tavern.model.vo.RoomAuditInfo;
 import com.manage.tavern.model.vo.TavernAuditResultVo;
+import com.manage.tavern.model.vo.TavernOverviewInfo;
 import com.manage.tavern.po.TarvenResultDetailsLog;
 import com.manage.tavern.po.TavernAuditResult;
 import com.manage.tavern.po.sys.TavernExportLog;
@@ -30,8 +31,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description:
@@ -156,6 +159,32 @@ public class TavernAuditResultServiceImpl implements TavernAuditResultService {
     @Override
     public String getLastUpdate(RoomAuditQuery query) {
         String res = tavernAuditResultMapper.getLastUpdate(query);
+        return res;
+    }
+
+    @Override
+    public TavernOverviewInfo getOverview(RoomAuditQuery query) {
+        UserInfoModel user = TokenUtil.getUser();
+        if (!user.getRoleIds().contains("ROLE_TAVERN_ROOT") && StringUtils.isBlank(query.getTgfd())) {
+            query.setTgfd(user.getUserName());
+        }
+        TavernOverviewInfo res = tavernAuditResultMapper.getOverview(query);
+        if (Objects.isNull(res)) {
+            return new TavernOverviewInfo();
+        }
+        String bkftFee = tavernAuditResultMapper.getBkftFee(query);
+        Integer roomCounts = tavernAuditResultMapper.getRoomCounts(query);
+        res.setBkftFee(bkftFee);
+        res.setRoomCounts(String.valueOf(roomCounts));
+        res.setLoginName(user.getLoginName());
+        res.setUserName(user.getUserName());
+        List<String> roleNames = new ArrayList();
+        for (String roleId : user.getRoleIds()) {
+            String roleName = tavernAuditResultMapper.getRoleName(roleId);
+            roleNames.add(roleName);
+        }
+        res.setUserRole(roleNames.toString());
+        res.setMonth(query.getMonth());
         return res;
     }
 

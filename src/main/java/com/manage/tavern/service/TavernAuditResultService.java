@@ -7,6 +7,7 @@ import com.manage.tavern.model.form.TavernAuditResultForm;
 import com.manage.tavern.model.form.TavernExportLogForm;
 import com.manage.tavern.model.query.RoomAuditQuery;
 import com.manage.tavern.model.vo.TavernAuditResultVo;
+import com.manage.tavern.model.vo.TavernOverviewInfo;
 import com.manage.tavern.po.TarvenResultDetailsLog;
 
 import java.util.List;
@@ -84,4 +85,11 @@ public interface TavernAuditResultService {
      * @return
      */
     String getLastUpdate(RoomAuditQuery query);
+
+    /**
+     * 总览查询
+     * @param query
+     * @return
+     */
+    TavernOverviewInfo getOverview(RoomAuditQuery query);
 }

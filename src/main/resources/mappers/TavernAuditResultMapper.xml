@@ -7,4 +7,48 @@
         where month = #{query.month}
         and op_time = (select max(op_time) from tavern_audit_result where month = #{query.month})
     </select>
+
+    <select id="getOverview" resultType="com.manage.tavern.model.vo.TavernOverviewInfo">
+        select
+            FORMAT(sum(settlement_Amount),2) as settlement_Amount
+            ,FORMAT(sum(net_Profits),2) as net_Profits
+            ,FORMAT(sum(price_Clean),2) as price_Clean
+            ,FORMAT(sum(sum_Expend),2) as sum_Expend
+            ,FORMAT(sum(actual_Zj),2) as actual_Zj
+            ,FORMAT(sum(kh_Fee),2) as kh_Fee
+            ,FORMAT(sum(bj_Fee),2) as bj_Fee
+            ,FORMAT(sum(bc_Expend),2) as bc_Expend
+            ,FORMAT(sum(daily_Expend),2) as daily_Expend
+            ,FORMAT(sum(commission ),2) as commission
+        from tavern_audit_result where 1=1
+        <if test="query.month != null and query.month != ''">
+            and month = #{query.month}
+            and op_time = (select max(op_time) from tavern_audit_result where month = #{query.month})
+        </if>
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and tgfd = #{query.tgfd}
+        </if>
+
+    </select>
+
+    <select id="getBkftFee" resultType="java.lang.String">
+        select format(sum(amount),2) as bkft_fee
+        from tavern_room_bkft where 1=1
+        <if test="query.month != null and query.month != ''">
+            and month = #{query.month}
+        </if>
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and tgfd = #{query.tgfd}
+        </if>
+    </select>
+
+    <select id="getRoomCounts" resultType="java.lang.Integer">
+        select count(1) from tavern_room_base_info where 1=1
+        <if test="query.tgfd != null and query.tgfd != ''">
+            and tgfd = #{query.tgfd}
+        </if>
+    </select>
+    <select id="getRoleName" resultType="java.lang.String">
+       select role_name from dm_sys_role where role_id = #{roleId}
+    </select>
 </mapper>
