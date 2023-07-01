@@ -105,14 +105,14 @@ public class TestController {
      */
     @RequestMapping("/getProIds")
     public void getProIds() {
-        Date start = DateUtils.String2Date("2023-04-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
-        Date end = DateUtils.String2Date("2023-04-30 23:59:59", "yyyy-MM-dd HH:mm:ss");
+        Date start = DateUtils.String2Date("2023-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
+        Date end = DateUtils.String2Date("2023-06-30 23:59:59", "yyyy-MM-dd HH:mm:ss");
         log.info("getProIds.start:{},end:{}",start,end);
         // 收款审批
 //        dingTalkDataApiService.getProInstanceIds(start,end,"PROC-B7FC540E-AEE5-4BAB-951E-F8CF55CDDE5C",1);
 
         // 财务报销审批
-        dingTalkDataApiService.getProInstanceIds(start,end,"PROC-DBE92E71-EFF7-4D44-B389-C289907EA27D",2,"202304");
+        dingTalkDataApiService.getProInstanceIds(start,end,"PROC-DBE92E71-EFF7-4D44-B389-C289907EA27D",2,"202306");
     }
 
     /**
@@ -128,8 +128,8 @@ public class TestController {
 
         QueryWrapper<TavernDingProData> qw = new QueryWrapper<>();
         qw.lambda().eq(TavernDingProData::getApprovalType,2);
-        qw.lambda().eq(TavernDingProData::getDataTime,"20230602");
-        qw.lambda().eq(TavernDingProData::getMonth,"202304");
+        qw.lambda().eq(TavernDingProData::getDataTime,"20230701");
+        qw.lambda().eq(TavernDingProData::getMonth,"202306");
         List<TavernDingProData> tavernDingProData = tavernDingProDataMapper.selectList(qw);
         log.info("tavernDingProData.size:{}",tavernDingProData.size());
         if (tavernDingProData.size() == 0) {
@@ -145,7 +145,7 @@ public class TestController {
 
         for (TavernDingProData proDatum : tavernDingProData) {
             String proId = proDatum.getProId();
-            dingTalkDataApiService.getProcessByInstanceId(proId,2,"");
+            dingTalkDataApiService.getProcessByInstanceId(proId,2,"202306");
         }
     }
 

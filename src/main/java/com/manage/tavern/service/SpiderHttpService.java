@@ -29,4 +29,9 @@ public interface SpiderHttpService {
      *               财务：PROC-DBE92E71-EFF7-4D44-B389-C289907EA27D
      */
     void doDingProIdsTask(String formId);
+
+    /**
+     * 每月第一天凌晨6点获取当月钉钉财务报销流程下的所有实例详情
+     */
+    void dingProDetailsTask();
 }

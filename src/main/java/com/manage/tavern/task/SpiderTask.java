@@ -108,6 +108,18 @@ public class SpiderTask {
         log.info("com.manage.tavern.task.SpiderTask.dingProIdsTask.end...time:{}",System.currentTimeMillis()-l);
     }
 
+
+    /**
+     * 每月第一天凌晨6点获取当月钉钉财务报销流程下的所有实例详情
+     */
+    @Scheduled(cron = "0 0 6 1 * ? ")
+    public void dingProDetailsTask() {
+        long l = System.currentTimeMillis();
+        log.info("com.manage.tavern.task.SpiderTask.dingProDetailsTask.start...time:{}",l);
+        spiderHttpService.dingProDetailsTask();
+        log.info("com.manage.tavern.task.SpiderTask.dingProDetailsTask.end...time:{}",System.currentTimeMillis()-l);
+    }
+
 //    /**
 //     * 每周三中午12点更新可编辑列表
 //     */

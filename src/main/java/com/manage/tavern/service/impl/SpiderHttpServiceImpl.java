@@ -7,11 +7,13 @@ import com.manage.tavern.constant.CommonConstant;
 import com.manage.tavern.constant.UrlEnum;
 import com.manage.tavern.mapper.ByBjDataMapper;
 import com.manage.tavern.mapper.TavernBydataRoomMapper;
+import com.manage.tavern.mapper.TavernDingProDataMapper;
 import com.manage.tavern.mapper.TavernHttpLogMapper;
 import com.manage.tavern.model.form.ByDataRoomForm;
 import com.manage.tavern.model.vo.TavernByBjDataVo;
 import com.manage.tavern.po.TavernByBjData;
 import com.manage.tavern.po.TavernByDataRoom;
+import com.manage.tavern.po.TavernDingProData;
 import com.manage.tavern.po.sys.TavernHttpLog;
 import com.manage.tavern.service.ByBjDataService;
 import com.manage.tavern.service.DingTalkDataApiService;
@@ -66,6 +68,9 @@ public class SpiderHttpServiceImpl implements SpiderHttpService {
 
     @Resource
     private TavernHttpLogMapper tavernHttpLogMapper;
+
+    @Resource
+    private TavernDingProDataMapper tavernDingProDataMapper;
 
     @Override
     public void spiderByDataRoom(ByDataRoomForm form) {
@@ -146,6 +151,23 @@ public class SpiderHttpServiceImpl implements SpiderHttpService {
         }
         // 财务报销审批
         dingTalkDataApiService.getProInstanceIds(start,end,"",type,lastMonth);
+    }
+
+    @Override
+    public void dingProDetailsTask() {
+        QueryWrapper<TavernDingProData> qw = new QueryWrapper<>();
+        String lastMonth = DateUtils.getLastMonth("yyyyMM");
+        qw.lambda().eq(TavernDingProData::getApprovalType,2);
+        qw.lambda().eq(TavernDingProData::getMonth,lastMonth);
+        List<TavernDingProData> tavernDingProData = tavernDingProDataMapper.selectList(qw);
+        log.info("tavernDingProData.size:{}",tavernDingProData.size());
+        if (tavernDingProData.size() == 0) {
+            return;
+        }
+        for (TavernDingProData proDatum : tavernDingProData) {
+            String proId = proDatum.getProId();
+            dingTalkDataApiService.getProcessByInstanceId(proId,2,lastMonth);
+        }
     }
 
     private synchronized void parseBjJson(String res, ByDataRoomForm form) {

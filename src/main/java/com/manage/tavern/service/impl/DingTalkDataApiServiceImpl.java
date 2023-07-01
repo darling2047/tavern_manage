@@ -320,17 +320,17 @@ public class DingTalkDataApiServiceImpl implements DingTalkDataApiService {
 
 
     private String getAccessToken() {
-//        String url = "https://oapi.dingtalk.com/gettoken?appkey=%s&appsecret=%s";
-//        String format = String.format(url, appKey, appSecret);
-//        String res = HttpUtils.doGet(restTemplate, format);
-//        log.info("getAccessToken.res:{}",res);
-//        if (StringUtils.isBlank(res)) {
-//            throw new RuntimeException("获取AccessToken失败");
-//        }
-//        JSONObject jsonObject = JSONObject.parseObject(res);
-//        String accessToken = jsonObject.getString("access_token");
-//        return accessToken;
-        return "ca671af984d636d489e8bffd2441a8cb";
+        String url = "https://oapi.dingtalk.com/gettoken?appkey=%s&appsecret=%s";
+        String format = String.format(url, appKey, appSecret);
+        String res = HttpUtils.doGet(restTemplate, format);
+        log.info("getAccessToken.res:{}",res);
+        if (StringUtils.isBlank(res)) {
+            throw new RuntimeException("获取AccessToken失败");
+        }
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        String accessToken = jsonObject.getString("access_token");
+        return accessToken;
+//        return "ca671af984d636d489e8bffd2441a8cb";
     }
 
     private String getId(){
