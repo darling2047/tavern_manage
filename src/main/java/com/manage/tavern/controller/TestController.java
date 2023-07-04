@@ -165,7 +165,8 @@ public class TestController {
      */
     @RequestMapping("/insertResult")
     public ResponResult insertResult() {
-        tavernAuditResultService.insertResult(DateUtils.getCurrDate("yyyyMM"),"SYSTEM");
+//        tavernAuditResultService.insertResult(DateUtils.getCurrDate("yyyyMM"),"SYSTEM");
+        tavernAuditResultService.insertResult("202306","SYSTEM");
         return ResponResult.success();
     }
 }

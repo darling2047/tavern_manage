@@ -20,4 +20,11 @@ public interface SysMenuMapper extends BaseMapper<DmSysMenu> {
      * @return
      */
     List<DmSysMenu> getMenus(@Param(value = "userId") Integer userId, @Param(value = "parentId") String parentId);
+
+    /**
+     * 获取最后一次登录时间
+     * @param loginName
+     * @return
+     */
+    String getLastLoginTime(@Param(value = "loginName") String loginName);
 }

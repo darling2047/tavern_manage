@@ -1,6 +1,7 @@
 package com.manage.tavern.service;
 
 import com.manage.tavern.model.base.MenuInfoModel;
+import com.manage.tavern.model.base.ResponResult;
 import com.manage.tavern.po.sys.DmSysUser;
 import com.manage.tavern.po.sys.DmSysUserRole;
 
@@ -42,4 +43,10 @@ public interface ISystemService {
      * @param url
      */
     void checkAuthority(String url);
+
+    /**
+     * 获取最后一次登录时间
+     * @return
+     */
+    String getLastLoginTime();
 }

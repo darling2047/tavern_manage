@@ -45,7 +45,7 @@ public class RoomAuditDeatilController {
     @GetMapping("/getBjDetails")
     public PaginationModel<TavernByBjDataVo> getList(RoomAuditQuery query) {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         PaginationModel<TavernByBjDataVo> res = roomAuditDeatilService.getBjDetails(query);
@@ -56,7 +56,7 @@ public class RoomAuditDeatilController {
     @GetMapping("/getDingBxDetails")
     public PaginationModel<TavernDingBxDataVo> getDingBxDetails(RoomAuditQuery query) {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         PaginationModel<TavernDingBxDataVo> res = roomAuditDeatilService.getDingBxDetails(query);
@@ -67,7 +67,7 @@ public class RoomAuditDeatilController {
     @GetMapping("/bjDetailDownLoad")
     public void downLoad(RoomAuditQuery query, HttpServletResponse response) throws IOException {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         query.setPageSize(10000);
@@ -88,7 +88,7 @@ public class RoomAuditDeatilController {
     @GetMapping("/dingBxDetailDownLoad")
     public void dingBxDetailDownLoad(RoomAuditQuery query, HttpServletResponse response) throws IOException {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         query.setPageSize(10000);
@@ -111,7 +111,7 @@ public class RoomAuditDeatilController {
     @GetMapping("/getBycwDetails")
     public PaginationModel<TavernByDataRoomVo> getBycwDetails(RoomAuditQuery query) {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         PaginationModel<TavernByDataRoomVo> res = roomAuditDeatilService.getBycwDetails(query);

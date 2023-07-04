@@ -53,7 +53,7 @@ public class RoomBkftController {
     @GetMapping(value = "/getList")
     public PaginationModel<RoomBkftVo> list(BkftRoomQuery query) {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         PaginationModel<RoomBkftVo> res = roomBkftService.getList(query);
@@ -89,7 +89,7 @@ public class RoomBkftController {
     @GetMapping("/downLoad")
     public void downLoad(BkftRoomQuery query, HttpServletResponse response) throws IOException {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         query.setPageSize(10000);

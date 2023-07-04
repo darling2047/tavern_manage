@@ -119,4 +119,9 @@ public class SystemServiceImpl implements ISystemService {
 //        }
     }
 
+    @Override
+    public String getLastLoginTime() {
+        String loginTime = menuMapper.getLastLoginTime(TokenUtil.getUser().getLoginName());
+        return loginTime;
+    }
 }

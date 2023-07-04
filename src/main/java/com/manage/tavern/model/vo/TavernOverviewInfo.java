@@ -40,56 +40,56 @@ public class TavernOverviewInfo {
     /**
      * 结算金额
      */
-    private String settlementAmount;
+    private String settlementAmount = "--";
 
     /**
      * 净利润
      */
-    private String netProfits;
+    private String netProfits = "--";
 
     /**
      * 平台打款
      */
-    private String priceClean;
+    private String priceClean = "--";
 
     /**
      * 开支总计
      */
-    private String sumExpend;
+    private String sumExpend = "--";
 
     /**
      * 不可分摊金额
      */
-    private String bkftFee;
+    private String bkftFee = "--";
 
     /**
      * 房租
      */
-    private String actualZj;
+    private String actualZj = "--";
 
     /**
      * 客耗品(天数 * 客耗基础标准)
      */
-    private String khFee;
+    private String khFee = "--";
 
     /**
      * 保洁
      */
-    private String bjFee;
+    private String bjFee = "--";
 
     /**
      * 布草开支
      */
-    private String bcExpend;
+    private String bcExpend = "--";
 
     /**
      * 日常开支
      */
-    private String dailyExpend;
+    private String dailyExpend = "--";
 
     /**
      * 佣金
      */
-    private String commission;
+    private String commission = "--";
 
 }

@@ -49,7 +49,7 @@ public class TavernAuditResultController {
     public PaginationModel<TavernAuditResultVo> getList(RoomAuditQuery query) {
         // 默认展示当前月的数据
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         PaginationModel<TavernAuditResultVo> res = tavernAuditResultService.getList(query);
@@ -74,7 +74,7 @@ public class TavernAuditResultController {
     @GetMapping("/downLoad")
     public void downLoad(RoomAuditQuery query, HttpServletResponse response) throws IOException {
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         query.setPageSize(10000);
@@ -120,7 +120,7 @@ public class TavernAuditResultController {
     public ResponResult<String> getLastUpdate(RoomAuditQuery query) throws IOException {
         // 默认展示当前月的数据
         if (StringUtils.isBlank(query.getMonth())) {
-            String month = DateUtils.getTime(new Date(), "yyyyMM");
+            String month = DateUtils.getLastMonth("yyyyMM");
             query.setMonth(month);
         }
         String date = tavernAuditResultService.getLastUpdate(query);

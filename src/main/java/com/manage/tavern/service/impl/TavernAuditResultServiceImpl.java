@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -183,7 +184,7 @@ public class TavernAuditResultServiceImpl implements TavernAuditResultService {
             String roleName = tavernAuditResultMapper.getRoleName(roleId);
             roleNames.add(roleName);
         }
-        res.setUserRole(roleNames.toString());
+        res.setUserRole(roleNames.stream().collect(Collectors.joining(",")));
         res.setMonth(query.getMonth());
         return res;
     }
