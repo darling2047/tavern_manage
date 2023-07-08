@@ -1,6 +1,5 @@
 package com.manage.tavern.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.manage.tavern.mapper.ByBjDataMapper;
@@ -10,18 +9,14 @@ import com.manage.tavern.model.query.RoomAuditQuery;
 import com.manage.tavern.model.vo.TavernByBjDataVo;
 import com.manage.tavern.model.vo.TavernByDataRoomVo;
 import com.manage.tavern.model.vo.TavernDingBxDataVo;
-import com.manage.tavern.po.TavernByBjData;
-import com.manage.tavern.po.TavernByDataRoom;
 import com.manage.tavern.po.sys.UserInfoModel;
 import com.manage.tavern.service.RoomAuditDeatilService;
-import com.manage.tavern.utils.BeanCopierUtils;
 import com.manage.tavern.utils.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

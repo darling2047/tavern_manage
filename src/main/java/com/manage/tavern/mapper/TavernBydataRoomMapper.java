@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.manage.tavern.model.query.RoomAuditQuery;
 import com.manage.tavern.model.vo.TavernByDataRoomVo;
-import com.manage.tavern.po.TavernByDataRoom;
+import com.manage.tavern.po.TavernBydataRoom;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @version:
  * @modified By:
  */
-public interface TavernBydataRoomMapper extends BaseMapper<TavernByDataRoom> {
+public interface TavernBydataRoomMapper extends BaseMapper<TavernBydataRoom> {
 
     /**
      * 宝寓财务清单查询

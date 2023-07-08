@@ -77,7 +77,7 @@ public class SpiderTask {
 
 
     /**
-     * 每月1号21点重新获取上月所有保洁数据
+     * 每月1号20点重新获取上月所有保洁数据
      */
     @Scheduled(cron = "0 0 20 1 * ? ")
     public void byBjDataMonthSync() throws InterruptedException {

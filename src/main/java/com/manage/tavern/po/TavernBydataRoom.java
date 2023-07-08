@@ -12,7 +12,7 @@ import java.util.Date;
  * @modified By:
  */
 @Data
-public class TavernByDataRoom {
+public class TavernBydataRoom {
 
     private String id;
 

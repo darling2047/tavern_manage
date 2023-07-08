@@ -72,9 +72,9 @@ public class TestController {
         String monthFirstDay = DateUtils.getMonthFirstDay(0);
         String currDate = DateUtils.getCurrDate("yyyy-MM-dd");
 //        form.setDate(monthFirstDay+","+currDate);
-        form.setDate("2023-05-01,2023-05-31");
+        form.setDate("2023-06-01,2023-06-30");
         form.setGroupBy("room");
-        form.setMonth("202305");
+        form.setMonth("202306");
         spiderHttpService.spiderByDataRoom(form);
         return ResponResult.success("HELLO_WORLD!");
     }
@@ -89,12 +89,12 @@ public class TestController {
         // 获取当前月的第一天
 //        String monthFirstDay = DateUtils.getMonthFirstDay(0);
 //        String currDate = DateUtils.getCurrDate("yyyy-MM-dd");
-        List<String> list = DateUtils.getDayListOfMonth("202305");
+        List<String> list = DateUtils.getDayListOfMonth("202306");
         for (String day : list) {
             form.setDate(day);
-            form.setMonth("202305");
+            form.setMonth("202306");
             spiderHttpService.byBjDataSync(form);
-            Thread.sleep(DateUtils.getRandom(2,5)*1000);
+//            Thread.sleep(DateUtils.getRandom(2,5)*1000);
         }
         return ResponResult.success("HELLO_WORLD!");
     }

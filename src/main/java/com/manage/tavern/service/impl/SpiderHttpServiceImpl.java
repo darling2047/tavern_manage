@@ -12,7 +12,7 @@ import com.manage.tavern.mapper.TavernHttpLogMapper;
 import com.manage.tavern.model.form.ByDataRoomForm;
 import com.manage.tavern.model.vo.TavernByBjDataVo;
 import com.manage.tavern.po.TavernByBjData;
-import com.manage.tavern.po.TavernByDataRoom;
+import com.manage.tavern.po.TavernBydataRoom;
 import com.manage.tavern.po.TavernDingProData;
 import com.manage.tavern.po.sys.TavernHttpLog;
 import com.manage.tavern.service.ByBjDataService;
@@ -96,10 +96,10 @@ public class SpiderHttpServiceImpl implements SpiderHttpService {
         }finally {
             tavernHttpLogMapper.insert(httpLog);
         }
-        List<TavernByDataRoom> tavernBydataRooms = JSONObject.parseArray(arr.toJSONString(), TavernByDataRoom.class);
+        List<TavernBydataRoom> tavernBydataRooms = JSONObject.parseArray(arr.toJSONString(), TavernBydataRoom.class);
         String opTime = DateUtils.date2String(new Date(), "yyyyMMdd");
         delOptime(opTime);
-        for (TavernByDataRoom tavernBydataRoom : tavernBydataRooms) {
+        for (TavernBydataRoom tavernBydataRoom : tavernBydataRooms) {
             tavernBydataRoom.setOpTime(opTime);
             tavernBydataRoom.setMonth(form.getMonth());
             tavernBydataRoom.setCreateTime(new Date());
@@ -223,7 +223,7 @@ public class SpiderHttpServiceImpl implements SpiderHttpService {
 
     private void delOptime(String opTime) {
         tavernBydataRoomMapper.delete(
-                new QueryWrapper<TavernByDataRoom>().lambda().eq(TavernByDataRoom::getOpTime,opTime));
+                new QueryWrapper<TavernBydataRoom>().lambda().eq(TavernBydataRoom::getOpTime,opTime));
     }
 
 }
