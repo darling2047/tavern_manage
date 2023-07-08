@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.manage.tavern.mapper.TavernAuditResultMapper" >
+    <insert id="insertOriginalValue">
+        insert into tavern_audit_result_original(original_id,value,type)
+        values (#{originalId},#{value},#{type})
+    </insert>
 
     <select id="getLastUpdate" resultType="java.lang.String">
         select date_format(max(create_time),'%Y-%m-%d %H:%i:%s') from tavern_audit_result

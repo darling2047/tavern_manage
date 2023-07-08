@@ -51,4 +51,12 @@ public interface TavernAuditResultMapper extends BaseMapper<TavernAuditResult> {
      * @return
      */
     String getRoleName(@Param(value = "roleId") String roleId);
+
+    /**
+     * 保存原值
+     * @param originalId    原id
+     * @param value         原值
+     * @param type          类型(修改字段名称)
+     */
+    void insertOriginalValue(Integer originalId, String value, String type);
 }

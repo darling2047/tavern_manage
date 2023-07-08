@@ -3,6 +3,7 @@ package com.manage.tavern.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.manage.tavern.constant.AuditResultFeeEnum;
 import com.manage.tavern.constant.ExportEnum;
 import com.manage.tavern.mapper.RoomAuditMapper;
 import com.manage.tavern.mapper.TarvenResultDetailsLogMapper;
@@ -107,6 +108,8 @@ public class TavernAuditResultServiceImpl implements TavernAuditResultService {
 
     @Override
     public void update(TavernAuditResultForm params) {
+        // 记录原值
+        recordOriginalValue(params);
         UserInfoModel user = TokenUtil.getUser();
         TavernAuditResult result = BeanCopierUtils.convert(params,TavernAuditResult.class);
         result.setUpdateTime(new Date());
@@ -114,6 +117,40 @@ public class TavernAuditResultServiceImpl implements TavernAuditResultService {
         result.setSource("CONSUMER");
         result.setUpdatorName(user.getUserName());
         tavernAuditResultMapper.updateById(result);
+    }
+
+    private void recordOriginalValue(TavernAuditResultForm params) {
+        TavernAuditResult result = tavernAuditResultMapper.selectById(params.getId());
+        if (Objects.isNull(result)) {
+            return;
+        }
+        if (!Objects.equals(params.getActualZj(),result.getActualZj())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getActualZj(), AuditResultFeeEnum.actualZj.getCode());
+        }
+        if (!Objects.equals(params.getKhFee(),result.getKhFee())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getKhFee(), AuditResultFeeEnum.khFee.getCode());
+        }
+        if (!Objects.equals(params.getBjFee(),result.getBjFee())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getBjFee(), AuditResultFeeEnum.bcExpend.getCode());
+        }
+        if (!Objects.equals(params.getBcExpend(),result.getBcExpend())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getBcExpend(), AuditResultFeeEnum.bcExpend.getCode());
+        }
+        if (!Objects.equals(params.getDailyExpend(),result.getDailyExpend())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getDailyExpend(), AuditResultFeeEnum.dailyExpend.getCode());
+        }
+        if (!Objects.equals(params.getSumExpend(),result.getSumExpend())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getSumExpend(), AuditResultFeeEnum.sumExpend.getCode());
+        }
+        if (!Objects.equals(params.getCommission(),result.getCommission())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getCommission(), AuditResultFeeEnum.commission.getCode());
+        }
+        if (!Objects.equals(params.getNetProfits(),result.getNetProfits())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getNetProfits(), AuditResultFeeEnum.netProfits.getCode());
+        }
+        if (!Objects.equals(params.getSettlementAmount(),result.getSettlementAmount())) {
+            tavernAuditResultMapper.insertOriginalValue(params.getId(),result.getSettlementAmount(), AuditResultFeeEnum.settlementAmount.getCode());
+        }
     }
 
     @Override
